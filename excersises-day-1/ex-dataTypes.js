@@ -42,26 +42,21 @@ function
 
 
 function stringManipulator(str) {
-    let noSpace = str.trim();
+  // Verwijder spaties aan begin/eind
+  let trimmed = str.trim();
 
-    let words = noSpace.split(" ")
+  // Verdeel woorden (maakt automatisch meerdere spaties netjes)
+  let words = trimmed.split(/\s+/);
 
-    let newWords = [];
+  // Zet elk woord om
+  let newWords = words.map(word => {
+    return word[0].toUpperCase() + word.slice(1);
+  });
 
-    for (let i = 0; i < words.length; i++) {
-       const word = words[i]
-       if (word === "") {
-        continue
-       }
-       console.log(word)
-       const newWord = word[0].toUpperCase() + word.slice(1).toLowerCase();
-       newWords.push(newWord);
-    }
-
-    return newWords;
-
-
+  // Voeg terug samen
+  return newWords.join(" ");
 }
+
 
 console.log(stringManipulator("john doe"))
 console.log(stringManipulator("JOhn dOe"))
@@ -205,10 +200,16 @@ Loop through items and push the item when callback(item) is true.
 function myFilter(arr, callback) {
     let result = [];
 
-    for (let i = 0; i < arr.length; i ++) {
-        
+    for (let i = 0; i < arr.length; i++) {
+        let item = arr[i];
+
+        if (callback(item) === true) {
+            result.push(item)
+        }
     }
 }
+
+console.log(myFilter([1,2,3,4,5], num => num > 3))
 
 
 /* 6. Date: Calculate Age
@@ -278,15 +279,16 @@ Split on spaces, iterate, increment.
  */
 
 function countWords(str) {
-    const words = str.split(" ");
-    const counts = new Map();
+    const words = str.split(" ");  // split op spaties 
+    const counts = new Map(); // maak nieuwe map 
 
 
     words.map(word => {
         let current = counts.get(word) || 0;
 
-        counts.set(word, current + 1 );
+        counts.set(word, current + 1)
     })
+
 
     return counts;
 }
@@ -341,3 +343,6 @@ function groupBy(arr, key) {
 
     return groups
 }
+
+
+

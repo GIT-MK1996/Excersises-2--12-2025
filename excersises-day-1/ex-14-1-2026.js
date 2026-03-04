@@ -220,20 +220,7 @@ function plus(a, b) {
 }
 console.log(plus(_myVar, myVar));
 
-/*
-2. Team With Roster Count
 
-Goal: Practice getters
-Create a Team class that:
-
-Has properties: name, players (array of player names)
-
-Has a getter playerCount that returns how many players are in the team
-
-Example:
-
-team.playerCount // 5 
-*/
 /*
 2. Team With Roster Count
 
@@ -441,9 +428,6 @@ class Stadium {
 
 /*
 
-
-
-
 6. Soccer Ball Condition
 
 Goal: Practice internal state changes
@@ -462,6 +446,32 @@ Changes condition to "damaged"
 Getter isUsable → true unless "damaged"
 
 */
+
+class Ball {
+    constructor(condition) {
+        this.condition = condition;
+    }
+
+    kick() {
+        if(this.condition = "new") {
+            this.condition = "used";
+        }
+    }
+
+    hitpost() {
+        this.condition = "damaged";
+    }
+
+    get isUsable() {
+        return this.condition !== "damaged";
+    }
+}
+
+const ball = new Ball("new")
+
+
+console.log()
+
 
 /*
 
@@ -484,43 +494,32 @@ Method summary() describing the session
 
 class TrainingSession {
     constructor(duration, intensity) {
-        this.setDuration(duration)
-        this.setIntensity(intensity)
-    }
-
-
-    setDuration(duration) {
-        this.duration = duration
-    }
-
-    setIntensity(intensity) {
-        this.intensity = intensity
+        this._duration = duration;
+        this._intensity = intensity;
     }
 
     calculateFatigue() {
+        let multiplier;
 
-        // d = input duration
-        let d = this.duration
-
-   
-        // i = translate input intensity into a number 
-        // we'll assume that "low" is 1, "medium" is 2 and "high" is 3
-        let i = this.intensity
-        
-        if(i === "low") {
-            i = 1
-        } else if(i === "medium" ) {
-            i = 2
-        } else {
-            i = 3
+        if(this._intensity === "low") {
+            multiplier = 1;
         }
 
-        // fatigue = d * i
-        let fatigue = d * i
+        if(this._intensity === "medium") {
+            multiplier = 2;
+        }
 
-        return fatigue
+        if(this._intensity === "hard") {
+            multiplier = 3;
+        }
+
+
+        return this._duration * multiplier;
     }
-}
+
+}  
+
+
 
 
 
@@ -547,7 +546,58 @@ Method giveRed(playerName):
 Automatically gives red if player has 2 yellows
 
 Method getCardStatus(playerName)
+*/
 
+
+class Referee {
+    constructor() {
+        this.yellowCards = {};
+    }   
+
+    giveYellow(playerName) {
+        if (!this.yellowCards[playerName]) {
+            this.yellowCards[playerName] = 1;
+        } else {
+            this.yellowCards[playerName] ++
+        }
+
+        if(this.yellowCards[playerName] >= 2) {
+            return "red"
+        }
+
+        return "yellow"
+    }
+
+    giveRed(playerName) {
+       this.yellowCards[playerName] = 2;
+       return "red";
+
+    }
+
+    getCardStatus(playerName) {
+        const count = this.yellowCards[playerName] || 0;
+
+        if(count === 1) {
+            return "yellow"
+        } 
+
+        if(count >= 2) {
+            return "red"
+        }
+
+        return "none"
+    }
+
+}
+
+const referee = new Referee()
+
+
+
+
+
+
+/*
 9. Transfer Value Calculator
 
 Goal: Practice getters that compute values
@@ -562,6 +612,38 @@ Higher skill = higher value
 Younger age = higher value
 
 No setter for market value (read-only)
+
+
+*/
+
+
+class Player {
+    constructor(age, skilllevel) {
+        this.age = age;
+        this.skilllevel = skilllevel;
+    }
+
+    get marketValue() {
+        let ageBonus = 0;
+
+        if(this.age < 30) {
+            ageBonus = (30 - this.age) * 2;
+        }
+
+        return  `${ageBonus + this.skilllevel} million `
+
+
+    }
+}
+
+const alves = new Player(25, 100);
+
+console.log(alves.marketValue)
+
+
+
+
+/*
 
 10. Match Clock
 
@@ -583,3 +665,39 @@ Getter half:
 "Full Time" (90+)
 
 Method reset() */
+
+
+class MatchClock {
+    constructor() {
+        this._minute = 0;
+    }
+
+    tick() {
+        this._minute += 1
+    }
+
+    get minute() {
+        return this._minute
+    }
+
+    get half() {
+        if(this.minute <= 45) {
+            return `1st half`
+        } else if(this.minute >= 46 && this.minute <= 90) {
+            return `2nd half`
+        } else{
+            return `match over`
+        }
+
+
+    }
+
+       reset() {
+        this._minute = 0;
+    }
+}
+
+
+const match10 = new MatchClock() 
+
+console.log(match10.half) 
