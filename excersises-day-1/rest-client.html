@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>chat</title>
+    </head>
+    <body>
+        <input id="messageInput" placeholder="type message">
+        <button id="greenButton" onclick="displayHello()">Display Posts</button>
+        <button id="blueButton">Display Comments</button>
+
+        <ul id="messages">
+
+        </ul>
+        <script src="Rest-client-server-practice.js"></script>
+        <script>
+            const messages = document.getElementById("messages")
+
+            function displayHello() {
+                console.log("helloworld")
+            }
+
+            function displayPosts() {
+                fetch("http://localhost:3000/posts")
+                .then(res => res.json())
+            }
+        </script>
+    </body>
+</html>
