@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>chat</title>
+</head>
+<body>
+
+<input id="messageInput" placeholder="post id">
+
+<button id="blueButton" style="color: blue;">Display Comments</button>
+<button id="greenButton" style="color: green;">Display Posts</button>
+
+<ul id="messages"></ul>
+
+
+<script src="Rest-client-server-practice.js"></script>
+<script>
+
+
+const messages = document.getElementById("messages");
+const inputField = document.getElementById("messageInput");
+const blueButton = document.getElementById("blueButton");
+const greenButton = document.getElementById("greenButton");
+const firstPost = document.getElementById("firstPost");
+
+function addMessageToHtml(newMessage) {
+    // <ul id="messages"></ul>
+
+    const li = document.createElement("li");
+    li.textContent = newMessage;
+    messages.appendChild(li);
+
+    /*
+    let list = messages.value; 
+    list = list + `<li>${newMessage}</li>`
+    messages.value = list
+    */
+
+    // <ul id="messages"><li>My new title</li></ul>
+}
+
+blueButton.addEventListener("click", function() {
+    const postId = inputField.value;
+    client
+    .get("/comments")
+    .then(comments => {
+        const filtered = comments.filter(comment => {
+            return comment.postId == postId
+        })
+        
+        //console.log(filtered)
+        filtered.forEach(comment => {
+            console.log(comment);
+            console.log(comment.text)
+
+            addMessageToHtml(makeItAllUpperCase(comment.text))
+            
+    });
+    })
+})
+
+function makeItAllUpperCase(text) {
+        return text.toUpperCase()
+}
+
+
+
+
+
+
+
+greenButton.addEventListener("click", function() {
+    client
+  .get("/posts")
+  .then((data) => {
+    console.log(data);
+    const posts = data;
+    console.log(posts[0].views);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+})
+
+/*
+
+blueButton.addEventListener2("click", function(){
+    const postId = inputField.value;
+    console.log(postId)
+    client
+    .get("/comments")
+    .then((data) => {
+        //console.log(data)
+        comments = data.filter((comment) => {
+            //console.log(comment)
+            //console.log(typeof comment.postId)
+            //console.log(typeof postId)
+             //console.log(comment.postId === postId)
+            return comment.postId == postId
+        } );
+        // filter out based on postId
+        console.log(comments)
+    })
+})
+    */
+
+</script>
+
+</body>
+</html>
+

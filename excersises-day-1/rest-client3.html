@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>chat</title>
+</head>
+<body>
+
+<input id="messageInput" placeholder="post id">
+
+<button id="blueButton" style="color: blue;">Display Comments</button>
+<button id="greenButton" style="color: green;" onclick="displayPosts()">Display Posts</button>
+
+<ul id="messages"></ul>
+
+
+<script src="Rest-client-server-practice.js"></script>
+<script>
+
+// write comments of individual steps first!
+
+//1. link the buttons from the html page to the script 
+const blueButton = document.getElementById("blueButton");
+const greenButton = document.getElementById("greenButton");
+const inputField = document.getElementById("messageInput");
+const messages = document.getElementById("messages");
+
+//2. write evenlistener to blue button to display comments.
+
+blueButton.addEventListener("click", function() {
+    //when clicked it has to take the input 
+    const postId = inputField.value;
+    // get the posts from the client
+    client
+    .get("/comments")
+    .then(comments => {
+        // filter the comments to only show the comments with the post id that is in the input field
+        const filtered = comments.filter((comment) => comment.postId == postId);
+
+        const html = filtered.map((comment) => {
+             return `<li>${comment.text}<li>`
+             console.log(html)
+        })
+
+        /*
+        filtered.forEach((comment) => {
+            const li = document.createElement("li");
+            li.textContent = comment.text;
+            messages.appendChild(li);
+            console.log(comments)
+        }) */
+    })
+})
+
+function displayPosts() {
+    // fetch the localhost and translate it to json 
+    fetch("http://localhost:3000/posts")
+    .then(res => res.json())
+    .then(data => {
+        console.log(data)
+        messages.innerHTML = ""
+
+        data.forEach((post) => {
+            const li = document.createElement("li");
+            li.textContent = post.id;
+            messages.appendChild(li)
+        })
+    })
+}
+
+
+
+</script>
+
+</body>
+</html>
+

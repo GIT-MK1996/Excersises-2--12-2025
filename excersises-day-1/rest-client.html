@@ -1,29 +1,103 @@
 <!DOCTYPE html>
-
 <html>
-    <head>
-        <title>chat</title>
-    </head>
-    <body>
-        <input id="messageInput" placeholder="type message">
-        <button id="greenButton" onclick="displayHello()">Display Posts</button>
-        <button id="blueButton">Display Comments</button>
+<head>
+<title>chat</title>
+</head>
+<body>
 
-        <ul id="messages">
+<input id="messageInput" placeholder="post id">
 
-        </ul>
-        <script src="Rest-client-server-practice.js"></script>
-        <script>
-            const messages = document.getElementById("messages")
+<button id="blueButton" style="color: blue;">Display Comments</button>
+<button id="greenButton" style="color: green;" onclick="displayPosts()">Display Posts</button>
+<button id="firstPost" onclick="firstPost()">show first post </button>
+<button id="displayAllPosts" onclick="allPosts()" >all posts</button>
 
-            function displayHello() {
-                console.log("helloworld")
-            }
+<ul id="messages"></ul>
 
-            function displayPosts() {
-                fetch("http://localhost:3000/posts")
-                .then(res => res.json())
-            }
-        </script>
-    </body>
+<script>
+
+const messages = document.getElementById("messages");
+const inputField = document.getElementById("messageInput");
+const blueButton = document.getElementById("blueButton");
+const greenButton = document.getElementById("greenButton");
+const firstPost = document.getElementById("firstPost");
+
+blueButton.addEventListener("click", function(){
+
+    console.log("button clicked")
+    const postId = inputField.value
+    displayComments(postId)
+
+})
+
+firstPost.addEventListener("click", function() {
+    fetch("http://localhost:3000/posts")
+        .then(res => res.json())
+        .then(data => {
+            console.log(data[0].title)
+            messages.innerHTML = ""
+
+            const li = document.createElement("li");
+            li.textContent = data[0].title;
+            messages.appendChild(li)
+        })
+})
+
+function allPosts() {
+    fetch("http://localhost:3000/posts")
+        .then(res => res.json())
+        .then(data => {
+            data.forEach((post) => {
+                const li = document.createElement("li");
+                li.textContent = post.title
+                messages.appendChild(li)
+            })
+        })
+}
+
+
+
+
+function displayPosts(){
+
+    fetch("http://localhost:3000/posts")
+    .then(res => res.json())
+    .then(data => {
+
+        console.log(data[0].title)
+
+        messages.innerHTML = ""
+
+        data.forEach(post => {
+
+            const li = document.createElement("li")
+            console.log("li gemaakt")
+
+            li.textContent = post.title
+            console.log("title toegevoegd", post.title)
+
+            messages.appendChild(li)
+            console.log("weergegeven op pagina")
+
+        })
+
+    })
+
+}
+
+function displayComments(postId){
+
+    fetch("http://localhost:3000/comments?postId=" + postId)
+    .then(res => res.json())
+    .then(data => {
+
+        console.log(data)
+
+    })
+
+}
+
+</script>
+
+</body>
 </html>

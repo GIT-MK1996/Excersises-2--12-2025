@@ -53,6 +53,11 @@ class RestClient {
 
 const client = new RestClient("http://localhost:3000");
 
+
+
+
+
+/*
 client
   .get("/posts")
   .then((data) => {
@@ -99,3 +104,5 @@ client
   .catch((error) => {
     console.error(error);
   });
+
+  */
