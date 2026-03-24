@@ -1,0 +1,24 @@
+{
+  "posts": [],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": 1
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": 1
+    },
+    {
+      "id": "3",
+      "text": "Comment 3",
+      "postId": 2
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "$schema": "./node_modules/json-server/schema.json"
+}
